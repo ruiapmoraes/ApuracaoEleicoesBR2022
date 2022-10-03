@@ -12,6 +12,8 @@ namespace CleanArchitecture.Infrastructure.Data
 
         public DbSet<UrlStatusHistory> UrlStatusHistories { get; set; }
 
+        public DbSet<Cand> Candidatos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

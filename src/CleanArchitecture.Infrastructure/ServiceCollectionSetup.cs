@@ -30,5 +30,10 @@ namespace CleanArchitecture.Infrastructure
             services.AddTransient<IUrlStatusChecker, UrlStatusChecker>();
             services.AddTransient<IHttpService, HttpService>();
         }
+
+        public static void AddApuracaoService(this IServiceCollection services)
+        {
+            services.AddScoped<ICandidatoService, CandidatoService>();
+        }
     }
 }

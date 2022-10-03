@@ -15,13 +15,15 @@ namespace CleanArchitecture.Core.Services
         private readonly IQueueSender _queueSender;
         private readonly IServiceLocator _serviceScopeFactoryLocator;
         private readonly IUrlStatusChecker _urlStatusChecker;
+        private readonly ICandidatoService _candidatoService;
 
         public EntryPointService(ILoggerAdapter<EntryPointService> logger,
             EntryPointSettings settings,
             IQueueReceiver queueReceiver,
             IQueueSender queueSender,
             IServiceLocator serviceScopeFactoryLocator,
-            IUrlStatusChecker urlStatusChecker)
+            IUrlStatusChecker urlStatusChecker,
+            ICandidatoService candidatoService)
         {
             _logger = logger;
             _settings = settings;
@@ -29,6 +31,7 @@ namespace CleanArchitecture.Core.Services
             _queueSender = queueSender;
             _serviceScopeFactoryLocator = serviceScopeFactoryLocator;
             _urlStatusChecker = urlStatusChecker;
+            _candidatoService = candidatoService;
         }
 
         public async Task ExecuteAsync()
@@ -51,6 +54,13 @@ namespace CleanArchitecture.Core.Services
 
                 // record HTTP status / response time / maybe existence of keyword in database
                 repository.Add(statusHistory);
+
+                //TODO: Colocar chamada para checar a uri do JSON
+                var apuracoes = await _candidatoService.CheckUrlAsync(message, "");
+                foreach (var apuracao in apuracoes)
+                {
+                    repository.Add(apuracao);
+                }
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)

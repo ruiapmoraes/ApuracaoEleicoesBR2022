@@ -18,7 +18,8 @@ namespace CleanArchitecture.Worker
             var queueSender = (IQueueSender)host.Services.GetRequiredService(typeof(IQueueSender));
             for (int i = 0; i < 10; i++)
             {
-                queueSender.SendMessageToQueue("https://google.com", "urlcheck");
+                //queueSender.SendMessageToQueue("https://google.com", "urlcheck");
+                queueSender.SendMessageToQueue("https://resultados.tse.jus.br/oficial/ele2022/544/dados-simplificados/br/br-c0001-e000544-r.json", "urlcheck");
             }
 
             host.Run();
@@ -37,6 +38,7 @@ namespace CleanArchitecture.Worker
                     services.AddDbContext(hostContext.Configuration);
                     services.AddRepositories();
                     services.AddUrlCheckingServices();
+                    services.AddApuracaoService();
 
                     var workerSettings = new WorkerSettings();
                     hostContext.Configuration.Bind(nameof(WorkerSettings), workerSettings);
